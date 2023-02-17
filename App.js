@@ -1,4 +1,5 @@
-import { StyleSheet, ImageBackground, View } from "react-native";
+import { StyleSheet, Text, View, ImageBackground } from "react-native";
+import LoginScreen from "./Screens/LoginScreen/LoginScreen";
 
 export default function App() {
   return (
@@ -6,7 +7,10 @@ export default function App() {
       <ImageBackground
         style={styles.image}
         source={require("./Screens/image/PhotoBG.jpg")}
-      />
+      >
+        <Text>New app dffgngyjfgj</Text>
+        <LoginScreen />
+      </ImageBackground>
     </View>
   );
 }
@@ -15,8 +19,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
-  image: { flex: 1, resizeMode: "cover", justifyContent: "center" },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "flex-end",
+  },
 });
