@@ -1,39 +1,100 @@
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  ImageBackground,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Platform,
+  Keyboard,
 } from "react-native";
 
-function LoginScreen() {
+function LoginScreen({ navigation }) {
+  const [isKeyboard, setIsKeyboard] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  formSubmit = () => {
+    console.log({ email, password });
+    setEmail("");
+    setPassword("");
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Увійти</Text>
-      <TextInput placeholder="Адреса електронної пошти" style={styles.input} />
-      <TextInput
-        secureTextEntry={true}
-        placeholder="Пароль"
-        style={styles.input}
-      />
-      <TouchableOpacity style={styles.btn}>
-        <Text style={styles.btnTitle}>Увійти</Text>
-      </TouchableOpacity>
-      <Text style={styles.noAcountTitle}>Ще нема акаунта? Зареєструватися</Text>
-    </View>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+        setIsKeyboard(false);
+      }}
+    >
+      <ImageBackground
+        style={styles.image}
+        source={require("../image/PhotoBG.jpg")}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <View style={styles.container}>
+            <Text style={styles.title}>Увійти</Text>
+            <TextInput
+              value={email}
+              onChangeText={(value) => setEmail(value)}
+              placeholder="Адреса електронної пошти"
+              onFocus={() => setIsKeyboard(true)}
+              style={styles.input}
+            />
+            <TextInput
+              value={password}
+              onChangeText={(value) => {
+                setPassword(value);
+              }}
+              secureTextEntry={true}
+              placeholder="Пароль"
+              style={styles.input}
+              onFocus={() => setIsKeyboard(true)}
+            />
+            {!isKeyboard && (
+              <>
+                <TouchableOpacity
+                  onPress={formSubmit}
+                  activeOpacity={0.7}
+                  style={styles.btn}
+                >
+                  <Text style={styles.btnTitle}>Увійти</Text>
+                </TouchableOpacity>
+                <Text
+                  style={styles.noAcountTitle}
+                  onPress={() => navigation.navigate("Registration")}
+                >
+                  Ще немає акаунта? Зареєструватися
+                </Text>
+              </>
+            )}
+          </View>
+        </KeyboardAvoidingView>
+      </ImageBackground>
+    </TouchableWithoutFeedback>
   );
 }
 
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "flex-end",
+  },
   container: {
-    height: 490,
+    justifyContent: "flex-end",
     backgroundColor: "#ffffff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
-  title: { fontSize: 30, marginTop: 32, marginBottom: 16, textAlign: "center" },
+  title: { fontSize: 30, marginTop: 32, marginBottom: 32, textAlign: "center" },
 
   input: {
     height: 50,
@@ -43,7 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 16,
     marginHorizontal: 16,
-    marginTop: 16,
+    marginBottom: 16,
   },
   btn: {
     backgroundColor: "#FF6C00",
@@ -62,6 +123,7 @@ const styles = StyleSheet.create({
   },
   noAcountTitle: {
     marginTop: 16,
+    marginBottom: 144,
     textAlign: "center",
   },
 });
