@@ -1,4 +1,10 @@
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 
 function LoginScreen() {
   return (
@@ -10,7 +16,10 @@ function LoginScreen() {
         placeholder="Пароль"
         style={styles.input}
       />
-      <Button style={styles.btn} title="Увійти" />
+      <TouchableOpacity style={styles.btn}>
+        <Text style={styles.btnTitle}>Увійти</Text>
+      </TouchableOpacity>
+      <Text style={styles.noAcountTitle}>Ще нема акаунта? Зареєструватися</Text>
     </View>
   );
 }
@@ -28,15 +37,31 @@ const styles = StyleSheet.create({
 
   input: {
     height: 50,
-    borderColor: "#000000",
+    borderColor: "#E8E8E8",
+    backgroundColor: "#F6F6F6",
     borderWidth: 1,
     borderRadius: 5,
+    padding: 16,
     marginHorizontal: 16,
     marginTop: 16,
   },
   btn: {
+    backgroundColor: "#FF6C00",
+    height: 50,
     marginTop: 43,
     marginHorizontal: 16,
-    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#FF6C00",
+    borderRadius: 100,
+  },
+  btnTitle: {
+    fontSize: 16,
+    color: "#FFFFFF",
+  },
+  noAcountTitle: {
+    marginTop: 16,
+    textAlign: "center",
   },
 });
