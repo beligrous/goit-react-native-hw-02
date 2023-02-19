@@ -14,6 +14,8 @@ import {
 
 function LoginScreen({ navigation }) {
   const [isKeyboard, setIsKeyboard] = useState(false);
+  const [isLoginActive, setIsLoginActive] = useState(false);
+  const [isPasswordActive, setPasswordActive] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -43,8 +45,15 @@ function LoginScreen({ navigation }) {
               value={email}
               onChangeText={(value) => setEmail(value)}
               placeholder="Адреса електронної пошти"
-              onFocus={() => setIsKeyboard(true)}
-              style={styles.input}
+              onFocus={() => {
+                setIsKeyboard(true);
+                setIsLoginActive(true);
+              }}
+              onBlur={() => setIsLoginActive(false)}
+              style={{
+                ...styles.input,
+                borderColor: isLoginActive ? "#FF6C00" : "#E8E8E8",
+              }}
             />
             <TextInput
               value={password}
@@ -53,8 +62,15 @@ function LoginScreen({ navigation }) {
               }}
               secureTextEntry={true}
               placeholder="Пароль"
-              style={styles.input}
-              onFocus={() => setIsKeyboard(true)}
+              style={{
+                ...styles.input,
+                borderColor: isPasswordActive ? "#FF6C00" : "#E8E8E8",
+              }}
+              onBlur={() => setPasswordActive(false)}
+              onFocus={() => {
+                setIsKeyboard(true);
+                setPasswordActive(true);
+              }}
             />
             {!isKeyboard && (
               <>
@@ -98,7 +114,6 @@ const styles = StyleSheet.create({
 
   input: {
     height: 50,
-    borderColor: "#E8E8E8",
     backgroundColor: "#F6F6F6",
     borderWidth: 1,
     borderRadius: 5,

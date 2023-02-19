@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   noAcountTitle: {
     marginTop: 16,
-    marginBottom: 30,
+    marginBottom: 78,
     textAlign: "center",
   },
 });
