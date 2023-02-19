@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   View,
   Text,
@@ -5,37 +6,110 @@ import {
   TouchableOpacity,
   StyleSheet,
   ImageBackground,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Platform,
+  Keyboard,
 } from "react-native";
 
 function RegistrationScreen({ navigation }) {
+  const [isKeyboard, setIsKeyboard] = useState(false);
+  const [isLoginActive, setIsLoginActive] = useState(false);
+  const [isEmailActive, setIsEmailActive] = useState(false);
+  const [isPasswordActive, setIsPasswordActive] = useState(false);
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  formSubmit = () => {
+    console.log({ email, login, password });
+    setEmail("");
+    setLogin("");
+    setPassword("");
+  };
+
   return (
-    <ImageBackground
-      style={styles.image}
-      source={require("../image/PhotoBG.jpg")}
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+        setIsKeyboard(false);
+      }}
     >
-      <View style={styles.container}>
-        <Text style={styles.title}>Реєстрація</Text>
-        <TextInput placeholder="Логін" style={styles.input} />
-        <TextInput
-          placeholder="Адреса електронної пошти"
-          style={styles.input}
-        />
-        <TextInput
-          secureTextEntry={true}
-          placeholder="Пароль"
-          style={styles.input}
-        />
-        <TouchableOpacity activeOpacity={0.7} style={styles.btn}>
-          <Text style={styles.btnTitle}>Увійти</Text>
-        </TouchableOpacity>
-        <Text
-          style={styles.noAcountTitle}
-          onPress={() => navigation.navigate("Login")}
+      <ImageBackground
+        style={styles.image}
+        source={require("../image/PhotoBG.jpg")}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          Вже є акаунт? Увійти
-        </Text>
-      </View>
-    </ImageBackground>
+          <View style={styles.container}>
+            <View style={styles.photo}></View>
+            <Text style={styles.title}>Реєстрація</Text>
+            <TextInput
+              placeholder="Логін"
+              value={login}
+              onChangeText={(value) => setLogin(value)}
+              onFocus={() => {
+                setIsKeyboard(true);
+                setIsLoginActive(true);
+              }}
+              onBlur={() => setIsLoginActive(false)}
+              style={{
+                ...styles.input,
+                borderColor: isLoginActive ? "#FF6C00" : "#E8E8E8",
+              }}
+            />
+            <TextInput
+              placeholder="Адреса електронної пошти"
+              value={email}
+              onChangeText={(value) => setEmail(value)}
+              onFocus={() => {
+                setIsKeyboard(true);
+                setIsEmailActive(true);
+              }}
+              onBlur={() => setIsEmailActive(false)}
+              style={{
+                ...styles.input,
+                borderColor: isEmailActive ? "#FF6C00" : "#E8E8E8",
+              }}
+            />
+            <TextInput
+              secureTextEntry={true}
+              placeholder="Пароль"
+              value={password}
+              onChangeText={(value) => setPassword(value)}
+              onFocus={() => {
+                setIsKeyboard(true);
+                setIsPasswordActive(true);
+              }}
+              onBlur={() => setIsPasswordActive(false)}
+              style={{
+                ...styles.input,
+                borderColor: isPasswordActive ? "#FF6C00" : "#E8E8E8",
+                marginBottom: isKeyboard ? 32 : 43,
+              }}
+            />
+            {!isKeyboard && (
+              <>
+                <TouchableOpacity
+                  onPress={formSubmit}
+                  activeOpacity={0.7}
+                  style={styles.btn}
+                >
+                  <Text style={styles.btnTitle}>Увійти</Text>
+                </TouchableOpacity>
+                <Text
+                  style={styles.noAcountTitle}
+                  onPress={() => navigation.navigate("Login")}
+                >
+                  Вже є акаунт? Увійти
+                </Text>
+              </>
+            )}
+          </View>
+        </KeyboardAvoidingView>
+      </ImageBackground>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -48,16 +122,25 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   container: {
+    position: "relative",
     justifyContent: "flex-end",
     backgroundColor: "#ffffff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
-  title: { fontSize: 30, marginTop: 32, marginBottom: 16, textAlign: "center" },
+  title: { fontSize: 30, marginTop: 92, marginBottom: 16, textAlign: "center" },
+  photo: {
+    position: "absolute",
+    top: -60,
+    alignSelf: "center",
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+  },
 
   input: {
     height: 50,
-    borderColor: "#E8E8E8",
     backgroundColor: "#F6F6F6",
     borderWidth: 1,
     borderRadius: 5,
@@ -68,7 +151,6 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: "#FF6C00",
     height: 50,
-    marginTop: 43,
     marginHorizontal: 16,
     justifyContent: "center",
     alignItems: "center",
