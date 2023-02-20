@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useFonts } from "expo-font";
 import {
   View,
   Text,
@@ -19,11 +20,20 @@ function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [fontsLoaded] = useFonts({
+    "Roboto-Medium": require("../font/Roboto-Medium.ttf"),
+    "Roboto-Regular": require("../font/Roboto-Regular.ttf"),
+  });
+
   formSubmit = () => {
     console.log({ email, password });
     setEmail("");
     setPassword("");
   };
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <TouchableWithoutFeedback
@@ -111,9 +121,16 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
-  title: { fontSize: 30, marginTop: 32, marginBottom: 32, textAlign: "center" },
+  title: {
+    fontFamily: "Roboto-Medium",
+    fontSize: 30,
+    marginTop: 32,
+    marginBottom: 32,
+    textAlign: "center",
+  },
 
   input: {
+    fontFamily: "Roboto-Regular",
     height: 50,
     backgroundColor: "#F6F6F6",
     borderWidth: 1,
@@ -133,10 +150,12 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   btnTitle: {
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     color: "#FFFFFF",
   },
   noAcountTitle: {
+    fontFamily: "Roboto-Regular",
     marginTop: 16,
     marginBottom: 144,
     textAlign: "center",

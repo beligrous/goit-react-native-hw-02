@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -11,11 +11,11 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
-import { Dimensions } from "react-native";
+// import { Dimensions } from "react-native";
 import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
+// import * as SplashScreen from "expo-splash-screen";
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 function RegistrationScreen({ navigation }) {
   const [isKeyboard, setIsKeyboard] = useState(false);
@@ -25,22 +25,23 @@ function RegistrationScreen({ navigation }) {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width - 16 * 2
-  );
+  // const [dimensions, setDimensions] = useState(
+  //   Dimensions.get("window").width - 16 * 2
+  // );
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("../font/Roboto-Medium.ttf"),
+    "Roboto-Regular": require("../font/Roboto-Regular.ttf"),
   });
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 16 * 2;
-      Dimensions.addEventListener("change", onChange);
-      return () => {
-        Dimensions.removeEventListener("change", onChange);
-      };
-    };
-  }, []);
+  // useEffect(() => {
+  //   const onChange = () => {
+  //     const width = Dimensions.get("window").width - 16 * 2;
+  //     Dimensions.addEventListener("change", onChange);
+  //     return () => {
+  //       Dimensions.removeEventListener("change", onChange);
+  //     };
+  //   };
+  // }, []);
 
   const formSubmit = () => {
     console.log({ email, login, password });
@@ -49,100 +50,98 @@ function RegistrationScreen({ navigation }) {
     setPassword("");
   };
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
+  // const onLayoutRootView = useCallback(async () => {
+  //   if (fontsLoaded) {
+  //     await SplashScreen.hideAsync();
+  //   }
+  // }, [fontsLoaded]);
 
   if (!fontsLoaded) {
     return null;
   }
 
   return (
-    <View onLayout={onLayoutRootView}>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-          setIsKeyboard(false);
-        }}
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+        setIsKeyboard(false);
+      }}
+    >
+      <ImageBackground
+        style={styles.image}
+        source={require("../image/PhotoBG.jpg")}
       >
-        <ImageBackground
-          style={styles.image}
-          source={require("../image/PhotoBG.jpg")}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-          >
-            <View style={styles.container}>
-              <View style={styles.photo}></View>
-              <Text style={styles.title}>Реєстрація</Text>
-              <TextInput
-                placeholder="Логін"
-                value={login}
-                onChangeText={(value) => setLogin(value)}
-                onFocus={() => {
-                  setIsKeyboard(true);
-                  setIsLoginActive(true);
-                }}
-                onBlur={() => setIsLoginActive(false)}
-                style={{
-                  ...styles.input,
-                  borderColor: isLoginActive ? "#FF6C00" : "#E8E8E8",
-                }}
-              />
-              <TextInput
-                placeholder="Адреса електронної пошти"
-                value={email}
-                onChangeText={(value) => setEmail(value)}
-                onFocus={() => {
-                  setIsKeyboard(true);
-                  setIsEmailActive(true);
-                }}
-                onBlur={() => setIsEmailActive(false)}
-                style={{
-                  ...styles.input,
-                  borderColor: isEmailActive ? "#FF6C00" : "#E8E8E8",
-                }}
-              />
-              <TextInput
-                secureTextEntry={true}
-                placeholder="Пароль"
-                value={password}
-                onChangeText={(value) => setPassword(value)}
-                onFocus={() => {
-                  setIsKeyboard(true);
-                  setIsPasswordActive(true);
-                }}
-                onBlur={() => setIsPasswordActive(false)}
-                style={{
-                  ...styles.input,
-                  borderColor: isPasswordActive ? "#FF6C00" : "#E8E8E8",
-                  marginBottom: isKeyboard ? 32 : 43,
-                }}
-              />
-              {!isKeyboard && (
-                <>
-                  <TouchableOpacity
-                    onPress={formSubmit}
-                    activeOpacity={0.7}
-                    style={styles.btn}
-                  >
-                    <Text style={styles.btnTitle}>Увійти</Text>
-                  </TouchableOpacity>
-                  <Text
-                    style={styles.noAcountTitle}
-                    onPress={() => navigation.navigate("Login")}
-                  >
-                    Вже є акаунт? Увійти
-                  </Text>
-                </>
-              )}
-            </View>
-          </KeyboardAvoidingView>
-        </ImageBackground>
-      </TouchableWithoutFeedback>
-    </View>
+          <View style={styles.container}>
+            <View style={styles.photo}></View>
+            <Text style={styles.title}>Реєстрація</Text>
+            <TextInput
+              placeholder="Логін"
+              value={login}
+              onChangeText={(value) => setLogin(value)}
+              onFocus={() => {
+                setIsKeyboard(true);
+                setIsLoginActive(true);
+              }}
+              onBlur={() => setIsLoginActive(false)}
+              style={{
+                ...styles.input,
+                borderColor: isLoginActive ? "#FF6C00" : "#E8E8E8",
+              }}
+            />
+            <TextInput
+              placeholder="Адреса електронної пошти"
+              value={email}
+              onChangeText={(value) => setEmail(value)}
+              onFocus={() => {
+                setIsKeyboard(true);
+                setIsEmailActive(true);
+              }}
+              onBlur={() => setIsEmailActive(false)}
+              style={{
+                ...styles.input,
+                borderColor: isEmailActive ? "#FF6C00" : "#E8E8E8",
+              }}
+            />
+            <TextInput
+              secureTextEntry={true}
+              placeholder="Пароль"
+              value={password}
+              onChangeText={(value) => setPassword(value)}
+              onFocus={() => {
+                setIsKeyboard(true);
+                setIsPasswordActive(true);
+              }}
+              onBlur={() => setIsPasswordActive(false)}
+              style={{
+                ...styles.input,
+                borderColor: isPasswordActive ? "#FF6C00" : "#E8E8E8",
+                marginBottom: isKeyboard ? 32 : 43,
+              }}
+            />
+            {!isKeyboard && (
+              <>
+                <TouchableOpacity
+                  onPress={formSubmit}
+                  activeOpacity={0.7}
+                  style={styles.btn}
+                >
+                  <Text style={styles.btnTitle}>Увійти</Text>
+                </TouchableOpacity>
+                <Text
+                  style={styles.noAcountTitle}
+                  onPress={() => navigation.navigate("Login")}
+                >
+                  Вже є акаунт? Увійти
+                </Text>
+              </>
+            )}
+          </View>
+        </KeyboardAvoidingView>
+      </ImageBackground>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -179,7 +178,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     height: 50,
     backgroundColor: "#F6F6F6",
     borderWidth: 1,
@@ -199,12 +198,12 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   btnTitle: {
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     color: "#FFFFFF",
   },
   noAcountTitle: {
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     marginTop: 16,
     marginBottom: 78,
     textAlign: "center",
